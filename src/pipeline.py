@@ -6,6 +6,8 @@ from pathlib import Path
 import pandas as pd
 
 from src.ingest import load_all_datasets
+
+from src.transform import transform_datasets
 from src.validate import run_validations
 
 
@@ -169,11 +171,13 @@ def run_pipeline() -> None:
     ensure_output_directories()
 
     datasets = load_all_datasets()
-    validation_results = run_validations(datasets)
+    transformed_datasets = transform_datasets(datasets)
+
+    validation_results = run_validations(transformed_datasets)
 
     save_validation_reports(validation_results)
 
-    split_results = split_clean_and_rejected_data(datasets, validation_results)
+    split_results = split_clean_and_rejected_data(transformed_datasets, validation_results)
     save_split_datasets(split_results)
 
     quality_summary_df = build_quality_summary(validation_results)
