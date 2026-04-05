@@ -1,0 +1,48 @@
+customers:
+  required_columns:
+    - customer_id
+    - full_name
+    - country
+
+  unique_columns:
+    - customer_id
+
+  email_columns:
+    - email
+
+  date_columns:
+    - registration_date
+
+products:
+  required_columns:
+    - product_id
+    - product_name
+
+  unique_columns:
+    - product_id
+
+  numeric_rules:
+    price:
+      min: 0
+
+orders:
+  required_columns:
+    - order_id
+    - customer_id
+    - product_id
+
+  unique_columns:
+    - order_id
+
+  numeric_rules:
+    quantity:
+      min: 1
+    total_amount:
+      min: 0
+
+  date_columns:
+    - order_date
+
+  foreign_keys:
+    customer_id: customers.customer_id
+    product_id: products.product_id

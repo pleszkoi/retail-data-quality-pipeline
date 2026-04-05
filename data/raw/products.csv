@@ -1,0 +1,9 @@
+product_id,product_name,category,price
+101,Laptop,Electronics,1200
+102,Phone,Electronics,800
+103,Tablet,Electronics,-300
+104,Chair,Furniture,150
+105,Desk,Furniture,
+106,Monitor,,300
+107,Mouse,Electronics,50
+107,Mouse Duplicate,Electronics,50

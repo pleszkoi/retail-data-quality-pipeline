@@ -1,0 +1,9 @@
+customer_id,full_name,email,country,registration_date
+1,John Doe,john.doe@email.com,US,2023-01-10
+2,Jane Smith,jane.smith@email.com,UK,2023-02-15
+3,Bob Lee,,US,2023-03-20
+4,Alice Brown,alice.brown@email,DE,invalid_date
+5,Charlie Black,charlie.black@email.com,,2023-05-01
+6,,no_name@email.com,FR,2023-06-12
+7,Duplicate User,duplicate@email.com,US,2023-07-01
+7,Duplicate User2,duplicate2@email.com,US,2023-07-02
