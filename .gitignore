@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.vscode/
+logs/*.log
+data/processed/*
+data/rejected/*
+*.sqlite
+*.db
+.DS_Store
