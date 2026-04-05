@@ -233,14 +233,14 @@ def validate_foreign_key(
 
 def combine_issue_dataframes(issue_dataframes: list[pd.DataFrame]) -> pd.DataFrame:
     """
-    Combine multiple issue dataframes into one dataframe.
+    Combine multiple issue dataframes into one dataframe while preserving original row indices.
     """
     non_empty_issues = [df for df in issue_dataframes if not df.empty]
 
     if not non_empty_issues:
         return pd.DataFrame()
 
-    combined = pd.concat(non_empty_issues, ignore_index=True)
+    combined = pd.concat(non_empty_issues)
     LOGGER.info("Combined validation issues count: %s", len(combined))
     return combined
 
