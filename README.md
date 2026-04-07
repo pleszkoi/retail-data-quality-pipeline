@@ -18,3 +18,11 @@ A practice project for learning data engineering and data quality concepts using
 - SQL
 - PySpark
 - Git
+
+## SQL Layer
+- Clean CSV outputs are loaded into SQLite
+- SQL views are used to calculate KPI summaries
+- Main outputs:
+  - daily_sales_kpi
+  - category_sales_summary
+  - customer_country_summary

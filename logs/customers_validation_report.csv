@@ -1,0 +1,6 @@
+customer_id,full_name,email,country,registration_date,dataset_name,rule_name,column_name,severity,message
+6,,no_name@email.com,FR,2023-06-12,customers,required_column,full_name,ERROR,Column 'full_name' is required and cannot be null or empty.
+5,Charlie Black,charlie.black@email.com,,2023-05-01,customers,required_column,country,ERROR,Column 'country' is required and cannot be null or empty.
+7,Duplicate User,duplicate@email.com,US,2023-07-01,customers,unique_column,customer_id,ERROR,Column 'customer_id' must contain unique values.
+7,Duplicate User2,duplicate2@email.com,US,2023-07-02,customers,unique_column,customer_id,ERROR,Column 'customer_id' must contain unique values.
+4,Alice Brown,alice.brown@email,DE,,customers,email_format,email,WARNING,Column 'email' contains invalid email format.

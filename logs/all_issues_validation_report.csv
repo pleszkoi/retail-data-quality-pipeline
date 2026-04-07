@@ -1,0 +1,19 @@
+customer_id,full_name,email,country,registration_date,dataset_name,rule_name,column_name,severity,message,product_id,product_name,category,price,order_id,order_date,quantity,total_amount,currency
+6.0,,no_name@email.com,FR,2023-06-12,customers,required_column,full_name,ERROR,Column 'full_name' is required and cannot be null or empty.,,,,,,,,,
+5.0,Charlie Black,charlie.black@email.com,,2023-05-01,customers,required_column,country,ERROR,Column 'country' is required and cannot be null or empty.,,,,,,,,,
+7.0,Duplicate User,duplicate@email.com,US,2023-07-01,customers,unique_column,customer_id,ERROR,Column 'customer_id' must contain unique values.,,,,,,,,,
+7.0,Duplicate User2,duplicate2@email.com,US,2023-07-02,customers,unique_column,customer_id,ERROR,Column 'customer_id' must contain unique values.,,,,,,,,,
+4.0,Alice Brown,alice.brown@email,DE,,customers,email_format,email,WARNING,Column 'email' contains invalid email format.,,,,,,,,,
+,,,,,products,unique_column,product_id,ERROR,Column 'product_id' must contain unique values.,107.0,Mouse,Electronics,50.0,,,,,
+,,,,,products,unique_column,product_id,ERROR,Column 'product_id' must contain unique values.,107.0,Mouse Duplicate,Electronics,50.0,,,,,
+,,,,,products,numeric_min_value,price,ERROR,Column 'price' must be numeric and >= 0.,103.0,Tablet,Electronics,-300.0,,,,,
+,,,,,products,numeric_min_value,price,ERROR,Column 'price' must be numeric and >= 0.,105.0,Desk,Furniture,,,,,,
+,,,,,products,required_column,category,ERROR,Column 'category' is required and cannot be null or empty.,106.0,Monitor,,300.0,,,,,
+4.0,,,,,orders,unique_column,order_id,ERROR,Column 'order_id' must contain unique values.,104.0,,,,1009.0,2023-08-09,1.0,150.0,USD
+4.0,,,,,orders,unique_column,order_id,ERROR,Column 'order_id' must contain unique values.,104.0,,,,1009.0,2023-08-09,1.0,150.0,USD
+3.0,,,,,orders,numeric_min_value,quantity,ERROR,Column 'quantity' must be numeric and >= 1.,103.0,,,,1003.0,2023-08-03,-1.0,-300.0,USD
+2.0,,,,,orders,numeric_min_value,quantity,ERROR,Column 'quantity' must be numeric and >= 1.,102.0,,,,1007.0,2023-08-07,,800.0,USD
+3.0,,,,,orders,numeric_min_value,total_amount,ERROR,Column 'total_amount' must be numeric and >= 0.,103.0,,,,1003.0,2023-08-03,-1.0,-300.0,USD
+2.0,,,,,orders,numeric_min_value,total_amount,ERROR,Column 'total_amount' must be numeric and >= 0.,102.0,,,,1008.0,2023-08-08,1.0,,USD
+999.0,,,,,orders,foreign_key,customer_id,ERROR,Column 'customer_id' contains values not found in customers.customer_id.,101.0,,,,1004.0,2023-08-04,1.0,1200.0,USD
+1.0,,,,,orders,foreign_key,product_id,ERROR,Column 'product_id' contains values not found in products.product_id.,999.0,,,,1005.0,2023-08-05,1.0,1200.0,USD
