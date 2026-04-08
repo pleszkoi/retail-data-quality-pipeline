@@ -63,27 +63,8 @@ def validate_required_column(
     """
     Validate that a required column is not null or empty.
     """
-    # A kiválasztott oszlopban megkeresi a hiányzó értékeket.
-    # Az eredmény egy boolean sorozat, pl.:
-    # 0    False
-    # 1    False
-    # 2     True
-    # 3    False
-    invalid_mask = dataframe[column_name].isna()
-
-    # string oszlopoknál nem csak a null a probléma, hanem az üres string is.
-    # A pandasban a szöveges oszlopok gyakran object típusúak.
-    if dataframe[column_name].dtype == "object":
-        # dataframe[column_name].astype(str)
-        # Minden értéket stringgé alakít
-
-        # .str.strip()
-        # Leveszi az elejéről és végéről a szóközöket
-
-        # invalid_mask | ...
-        # ha valami null vagy üres string, akkor legyen hibás
-        # így a " " típusú tartalmat is hibának veszi
-        invalid_mask = invalid_mask | (dataframe[column_name].astype(str).str.strip() == "")
+    series = dataframe[column_name]
+    invalid_mask = series.isna() | (series.astype(str).str.strip() == "")
 
     issues = _build_issue_dataframe(
         dataframe=dataframe,

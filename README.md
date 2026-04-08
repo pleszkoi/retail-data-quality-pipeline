@@ -26,3 +26,15 @@ A practice project for learning data engineering and data quality concepts using
   - daily_sales_kpi
   - category_sales_summary
   - customer_country_summary
+
+## Testing
+
+```bash
+pytest -v
+```
+
+Tests cover:
+
+- validation logic
+- YAML rule loading
+- pipeline output generation
