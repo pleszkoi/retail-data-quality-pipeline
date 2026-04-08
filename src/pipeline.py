@@ -8,7 +8,7 @@ import pandas as pd
 from src.ingest import load_all_datasets
 
 from src.transform import transform_datasets
-from src.validate import run_validations
+from src.validate import run_validations_from_config
 
 
 LOGGER = logging.getLogger(__name__)
@@ -231,7 +231,7 @@ def run_pipeline() -> None:
 
     # Ez a validate lépés.
     # A transzformált adatokon lefuttatja a quality szabályokat.
-    validation_results = run_validations(transformed_datasets)
+    validation_results = run_validations_from_config(transformed_datasets)
 
     # Elmenti a részletes validációs riportokat.
     save_validation_reports(validation_results)

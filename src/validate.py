@@ -6,6 +6,7 @@ from typing import Any
 
 import pandas as pd
 
+from src.rule_loader import load_quality_rules
 
 LOGGER = logging.getLogger(__name__)
 
@@ -57,6 +58,7 @@ def validate_required_column(
     dataframe: pd.DataFrame,
     dataset_name: str,
     column_name: str,
+    severity: str = "ERROR",
 ) -> pd.DataFrame:
     """
     Validate that a required column is not null or empty.
@@ -90,7 +92,7 @@ def validate_required_column(
         rule_name="required_column",
         column_name=column_name,
         message=f"Column '{column_name}' is required and cannot be null or empty.",
-        severity="ERROR",
+        severity=severity,
     )
 
     LOGGER.info(
@@ -106,6 +108,7 @@ def validate_unique_column(
     dataframe: pd.DataFrame,
     dataset_name: str,
     column_name: str,
+    severity: str = "ERROR",
 ) -> pd.DataFrame:
     """
     Validate that values in a column are unique.
@@ -123,7 +126,7 @@ def validate_unique_column(
         rule_name="unique_column",
         column_name=column_name,
         message=f"Column '{column_name}' must contain unique values.",
-        severity="ERROR",
+        severity=severity,
     )
 
     LOGGER.info(
@@ -139,6 +142,7 @@ def validate_date_column(
     dataframe: pd.DataFrame,
     dataset_name: str,
     column_name: str,
+    severity: str = "ERROR",
 ) -> pd.DataFrame:
     """
     Validate that values in a date column can be parsed as dates.
@@ -161,7 +165,7 @@ def validate_date_column(
         rule_name="date_format",
         column_name=column_name,
         message=f"Column '{column_name}' contains invalid date values.",
-        severity="ERROR",
+        severity=severity,
     )
 
     LOGGER.info(
@@ -178,6 +182,7 @@ def validate_numeric_min_value(
     dataset_name: str,
     column_name: str,
     min_value: float,
+    severity: str = "ERROR",
 ) -> pd.DataFrame:
     """
     Validate that a numeric column is greater than or equal to min_value.
@@ -200,7 +205,7 @@ def validate_numeric_min_value(
         rule_name="numeric_min_value",
         column_name=column_name,
         message=f"Column '{column_name}' must be numeric and >= {min_value}.",
-        severity="ERROR",
+        severity=severity,
     )
 
     LOGGER.info(
@@ -216,6 +221,7 @@ def validate_email_column(
     dataframe: pd.DataFrame,
     dataset_name: str,
     column_name: str,
+    severity: str = "WARNING",
 ) -> pd.DataFrame:
     """
     Validate email format for non-empty values.
@@ -240,7 +246,7 @@ def validate_email_column(
         rule_name="email_format",
         column_name=column_name,
         message=f"Column '{column_name}' contains invalid email format.",
-        severity="WARNING",
+        severity=severity,
     )
 
     LOGGER.info(
@@ -259,6 +265,7 @@ def validate_foreign_key(
     column_name: str,
     reference_column: str,
     reference_dataset_name: str,
+    severity: str = "ERROR",
 ) -> pd.DataFrame:
     """
     Validate that values in column_name exist in the reference dataframe.
@@ -293,7 +300,7 @@ def validate_foreign_key(
             f"Column '{column_name}' contains values not found in "
             f"{reference_dataset_name}.{reference_column}."
         ),
-        severity="ERROR",
+        severity=severity,
     )
 
     LOGGER.info(
@@ -400,3 +407,90 @@ def run_validations(datasets: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame
         "orders": order_issues,
         "all_issues": all_issues,
     }
+
+
+def run_validations_from_config(datasets: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
+    """
+    Run validations based on YAML configuration rules.
+    """
+    quality_rules = load_quality_rules()
+
+    dataset_results: dict[str, pd.DataFrame] = {}
+
+    for dataset_name, rules in quality_rules.items():
+        dataframe = datasets[dataset_name]
+        issue_dataframes: list[pd.DataFrame] = []
+
+        for rule in rules.get("required_columns", []):
+            issue_dataframes.append(
+                validate_required_column(
+                    dataframe=dataframe,
+                    dataset_name=dataset_name,
+                    column_name=rule["column"],
+                    severity=rule.get("severity", "ERROR"),
+                )
+            )
+
+        for rule in rules.get("unique_columns", []):
+            issue_dataframes.append(
+                validate_unique_column(
+                    dataframe=dataframe,
+                    dataset_name=dataset_name,
+                    column_name=rule["column"],
+                    severity=rule.get("severity", "ERROR"),
+                )
+            )
+
+        for rule in rules.get("date_columns", []):
+            issue_dataframes.append(
+                validate_date_column(
+                    dataframe=dataframe,
+                    dataset_name=dataset_name,
+                    column_name=rule["column"],
+                    severity=rule.get("severity", "ERROR"),
+                )
+            )
+
+        for rule in rules.get("email_columns", []):
+            issue_dataframes.append(
+                validate_email_column(
+                    dataframe=dataframe,
+                    dataset_name=dataset_name,
+                    column_name=rule["column"],
+                    severity=rule.get("severity", "WARNING"),
+                )
+            )
+
+        for rule in rules.get("numeric_rules", []):
+            issue_dataframes.append(
+                validate_numeric_min_value(
+                    dataframe=dataframe,
+                    dataset_name=dataset_name,
+                    column_name=rule["column"],
+                    min_value=rule["min_value"],
+                    severity=rule.get("severity", "ERROR"),
+                )
+            )
+
+        for rule in rules.get("foreign_keys", []):
+            reference_dataset_name = rule["reference_dataset"]
+            reference_column = rule["reference_column"]
+
+            issue_dataframes.append(
+                validate_foreign_key(
+                    dataframe=dataframe,
+                    reference_dataframe=datasets[reference_dataset_name],
+                    dataset_name=dataset_name,
+                    column_name=rule["column"],
+                    reference_column=reference_column,
+                    reference_dataset_name=reference_dataset_name,
+                    severity=rule.get("severity", "ERROR"),
+                )
+            )
+
+        dataset_results[dataset_name] = combine_issue_dataframes(issue_dataframes)
+
+    all_issues = combine_issue_dataframes(list(dataset_results.values()))
+    dataset_results["all_issues"] = all_issues
+
+    return dataset_results

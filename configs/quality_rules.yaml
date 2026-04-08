@@ -1,48 +1,73 @@
 customers:
   required_columns:
-    - customer_id
-    - full_name
-    - country
+    - column: customer_id
+      severity: ERROR
+    - column: full_name
+      severity: ERROR
+    - column: country
+      severity: ERROR
 
   unique_columns:
-    - customer_id
-
-  email_columns:
-    - email
+    - column: customer_id
+      severity: ERROR
 
   date_columns:
-    - registration_date
+    - column: registration_date
+      severity: ERROR
+
+  email_columns:
+    - column: email
+      severity: WARNING
 
 products:
   required_columns:
-    - product_id
-    - product_name
+    - column: product_id
+      severity: ERROR
+    - column: product_name
+      severity: ERROR
+    - column: category
+      severity: ERROR
 
   unique_columns:
-    - product_id
+    - column: product_id
+      severity: ERROR
 
   numeric_rules:
-    price:
-      min: 0
+    - column: price
+      min_value: 0
+      severity: ERROR
 
 orders:
   required_columns:
-    - order_id
-    - customer_id
-    - product_id
+    - column: order_id
+      severity: ERROR
+    - column: customer_id
+      severity: ERROR
+    - column: product_id
+      severity: ERROR
 
   unique_columns:
-    - order_id
-
-  numeric_rules:
-    quantity:
-      min: 1
-    total_amount:
-      min: 0
+    - column: order_id
+      severity: ERROR
 
   date_columns:
-    - order_date
+    - column: order_date
+      severity: ERROR
+
+  numeric_rules:
+    - column: quantity
+      min_value: 1
+      severity: ERROR
+    - column: total_amount
+      min_value: 0
+      severity: ERROR
 
   foreign_keys:
-    customer_id: customers.customer_id
-    product_id: products.product_id
+    - column: customer_id
+      reference_dataset: customers
+      reference_column: customer_id
+      severity: ERROR
+    - column: product_id
+      reference_dataset: products
+      reference_column: product_id
+      severity: ERROR

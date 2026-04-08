@@ -1,6 +1,6 @@
 product_id,product_name,category,price,dataset_name,rule_name,column_name,severity,message
+106,Monitor,,300.0,products,required_column,category,ERROR,Column 'category' is required and cannot be null or empty.
 107,Mouse,Electronics,50.0,products,unique_column,product_id,ERROR,Column 'product_id' must contain unique values.
 107,Mouse Duplicate,Electronics,50.0,products,unique_column,product_id,ERROR,Column 'product_id' must contain unique values.
 103,Tablet,Electronics,-300.0,products,numeric_min_value,price,ERROR,Column 'price' must be numeric and >= 0.
 105,Desk,Furniture,,products,numeric_min_value,price,ERROR,Column 'price' must be numeric and >= 0.
-106,Monitor,,300.0,products,required_column,category,ERROR,Column 'category' is required and cannot be null or empty.
