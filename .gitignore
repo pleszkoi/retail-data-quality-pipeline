@@ -10,3 +10,4 @@ data/rejected/*
 *.db
 .DS_Store
 data/sqlite/*.db
+data/azure_downloads/
