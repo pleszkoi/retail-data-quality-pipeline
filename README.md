@@ -52,7 +52,7 @@ Raw CSV → Ingestion → Validation → Transformation → Split (clean/rejecte
   - `pyspark_jobs/spark_pipeline.py`
 
 - **Cloud storage**
-  - Azure Data Lake Storage (feltöltés script)
+  - Azure Data Lake Storage (feltöltés-letöltés script)
 
 - **CI/CD**
   - Jenkins pipeline (`Jenkinsfile`)
@@ -90,7 +90,7 @@ Raw CSV → Ingestion → Validation → Transformation → Split (clean/rejecte
 
 ## 4. Futtatás
 
-### 1. Környezet létrehozása
+### 4.1. Környezet létrehozása
 
 ```bash
 python3 -m venv .venv
@@ -100,7 +100,7 @@ pip install -r requirements.txt
 
 ---
 
-### 2. Pipeline futtatása (pandas verzió)
+### 4.2. Pipeline futtatása (pandas verzió)
 
 ```bash
 python -m src.pipeline
@@ -108,7 +108,7 @@ python -m src.pipeline
 
 ---
 
-### 3. SQLite betöltés és KPI-k
+### 4.3. SQLite betöltés és KPI-k
 
 ```bash
 python -m src.load_to_sqlite
@@ -116,7 +116,7 @@ python -m src.load_to_sqlite
 
 ---
 
-### 4. PySpark pipeline futtatása
+### 4.4. PySpark pipeline futtatása
 
 ```bash
 python pyspark_jobs/spark_pipeline.py
@@ -124,7 +124,7 @@ python pyspark_jobs/spark_pipeline.py
 
 ---
 
-### 5. Tesztek futtatása
+### 4.5. Tesztek futtatása
 
 ```bash
 pytest -v
@@ -132,7 +132,7 @@ pytest -v
 
 ---
 
-### 6. Jenkins pipeline
+### 4.6. Jenkins pipeline
 
 A pipeline automatizált futtatása Jenkins segítségével történik:
 
@@ -180,21 +180,21 @@ A szabályok konfigurálhatóak YAML fájlban (`configs/quality_rules.yaml`).
 
 ## 6. Outputok
 
-### 📁 Fájlok
+### Fájlok
 
 - `data/processed/clean_*.csv`
 - `data/rejected/rejected_*.csv`
 
 ---
 
-### 📊 Logok
+### Logok
 
 - `logs/*_validation_report.csv`
 - `logs/quality_summary.csv`
 
 ---
 
-### 🗄 SQLite táblák
+### SQLite táblák
 
 - `clean_orders`
 - `clean_customers`
@@ -202,7 +202,7 @@ A szabályok konfigurálhatóak YAML fájlban (`configs/quality_rules.yaml`).
 
 ---
 
-### 📈 KPI view-k
+### KPI view-k
 
 - `daily_sales_kpi`
 - `category_sales_summary`
@@ -210,14 +210,14 @@ A szabályok konfigurálhatóak YAML fájlban (`configs/quality_rules.yaml`).
 
 ---
 
-### ⚡ Spark output
+### Spark output
 
 - `data/processed/spark_*`
 - `data/rejected/spark_*`
 
 ---
 
-### 🧪 Jenkins artifactok
+### Jenkins artifactok
 
 A pipeline futása során generált fájlok archiválásra kerülnek Jenkinsben:
 
@@ -229,14 +229,14 @@ A pipeline futása során generált fájlok archiválásra kerülnek Jenkinsben:
 
 ## 7. Fő tanulságok
 
-### ✔ Miért fontos a validáció?
+### Miért fontos a validáció?
 
 - hibás adatok torzítják az üzleti riportokat
 - korai szűrés = megbízhatóbb rendszer
 
 ---
 
-### ✔ Miért kell rejected layer?
+### Miért kell rejected layer?
 
 - nem vesznek el a hibás rekordok
 - visszakövethető az adatminőség
@@ -244,7 +244,7 @@ A pipeline futása során generált fájlok archiválásra kerülnek Jenkinsben:
 
 ---
 
-### ✔ Mikor elég pandas, mikor kell Spark?
+### Mikor elég pandas, mikor kell Spark?
 
 | pandas | Spark |
 |------|------|
@@ -254,7 +254,7 @@ A pipeline futása során generált fájlok archiválásra kerülnek Jenkinsben:
 
 ---
 
-### ✔ Miért hasznos az automatizált tesztelés?
+### Miért hasznos az automatizált tesztelés?
 
 - gyors visszajelzés
 - regressziók elkerülése
@@ -262,7 +262,7 @@ A pipeline futása során generált fájlok archiválásra kerülnek Jenkinsben:
 
 ---
 
-### ✔ Miért fontos a CI/CD?
+### Miért fontos a CI/CD?
 
 - automatizált futtatás
 - konzisztens környezet
